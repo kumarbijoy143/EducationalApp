@@ -1,0 +1,6 @@
+# Add one YouTube playlist link per line below.
+# Example:
+# https://www.youtube.com/playlist?list=PLxxxxxxxxxxxxxxxx
+#
+# Optional custom title format:
+# Class 10 Mathematics | https://www.youtube.com/playlist?list=PLxxxxxxxxxxxxxxxx
