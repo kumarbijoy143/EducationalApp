@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#090d18">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Educational TV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090d18;--panel:#111a2b;--line:rgba(255,255,255,.09);--text:#f4f7ff;--muted:#9ba9c1;--accent:#65b8ff;--radius:18px}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}body{min-height:100vh;background:radial-gradient(ellipse at 12% 0%,rgba(56,115,190,.2),transparent 42%),radial-gradient(ellipse at 95% 90%,rgba(112,80,190,.14),transparent 38%),var(--bg);overflow-x:hidden}button{font:inherit;color:inherit}
+.app{width:min(1500px,100%);margin:auto;padding:28px 4.2vw 54px}.topbar{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:34px}.brand{display:flex;align-items:center;gap:14px}.logo{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#238bdc,#7566ed);box-shadow:0 8px 28px #2376c344}.logo svg{width:25px;height:25px}.brand-name{font-size:19px;font-weight:800;letter-spacing:-.5px}.brand-sub{font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:1.5px;text-transform:uppercase}.top-actions{display:flex;align-items:center;gap:12px}.pill,.refresh{border:1px solid var(--line);background:#ffffff08;color:var(--muted);padding:10px 15px;border-radius:999px;font-size:12px}.refresh{cursor:pointer;color:var(--text)}.refresh:focus-visible{outline:3px solid white;outline-offset:3px}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:28px}.eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase;margin-bottom:12px}h1{font-size:clamp(32px,4.3vw,58px);line-height:1.04;letter-spacing:-2px;margin:0;font-weight:800}.hero p{color:var(--muted);font-size:15px;line-height:1.6;margin:13px 0 0;max-width:570px}.hero-mark{font-size:clamp(48px,7vw,92px);opacity:.18;line-height:1;user-select:none}.section-head{display:flex;align-items:center;justify-content:space-between;margin:34px 0 16px}.section-head h2{font-size:18px;margin:0;font-weight:700}.section-head span{font-size:12px;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.card{min-width:0;text-align:left;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:linear-gradient(145deg,#17243a,#101827);padding:0;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s;outline:none}.card:hover{transform:translateY(-3px);border-color:#65b8ff77}.card:focus-visible,.card.focused{outline:3px solid white;outline-offset:4px;border-color:var(--accent);box-shadow:0 0 0 6px #65b8ff30}.thumb{aspect-ratio:16/9;background:linear-gradient(135deg,#1b4774,#292650);position:relative;overflow:hidden}.thumb img{width:100%;height:100%;object-fit:cover;display:block}.thumb:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,#07101ddd)}.play-badge{position:absolute;z-index:1;right:13px;bottom:12px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#111;box-shadow:0 4px 15px #0006}.play-badge svg{width:15px;height:15px;margin-left:2px}.card-body{padding:15px 16px 17px}.card-title{font-size:15px;font-weight:700;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:40px}.card-meta{color:var(--muted);font-size:11px;margin-top:9px}.empty{border:1px dashed #ffffff2b;border-radius:20px;padding:34px 24px;text-align:center;background:#ffffff05}.empty-icon{font-size:34px;margin-bottom:12px}.empty h3{font-size:18px;margin:0 0 8px}.empty p{font-size:13px;line-height:1.65;color:var(--muted);max-width:650px;margin:0 auto}.empty code{color:#b8dfff}.footer{margin-top:42px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;color:#72819b;font-size:11px}
+.player-screen{display:none;position:fixed;inset:0;z-index:20;background:#03060c;padding:24px;flex-direction:column}.player-screen.open{display:flex}.player-top{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:0 0 16px}.player-heading{min-width:0}.player-heading strong{font-size:17px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.player-heading small{display:block;color:var(--muted);margin-top:5px;font-size:11px}.close-btn{border:1px solid #ffffff2a;background:#ffffff12;border-radius:12px;padding:11px 16px;cursor:pointer}.close-btn:focus-visible{outline:3px solid white;outline-offset:3px}.video-area{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}#youtubePlayer{width:min(100%,1500px);height:100%;max-height:calc(100vh - 105px);aspect-ratio:16/9;border:0;background:#000}.loading{color:var(--muted);padding:25px;text-align:center}.status{color:var(--muted);font-size:12px;margin-top:12px;text-align:center;min-height:18px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.app{padding-left:3vw;padding-right:3vw}}@media(max-width:700px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.app{padding:18px 16px 36px}.topbar{margin-bottom:28px}.hero-mark{display:none}.hero p{font-size:13px}.card-body{padding:12px}.card-title{font-size:13px}.pill{display:none}}@media(max-width:420px){.grid{grid-template-columns:1fr 1fr}.brand-name{font-size:16px}}
+</style>
+</head>
+<body>
+<main class="app" id="home">
+  <header class="topbar">
+    <div class="brand"><div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 5.5v15M8 7h8M8 11h8"/></svg></div><div><div class="brand-name" id="appName">Educational TV</div><div class="brand-sub">Learn • Explore • Grow</div></div></div>
+    <div class="top-actions"><div class="pill">TV-friendly learning library</div><button class="refresh" id="refreshBtn" type="button">↻ Refresh</button></div>
+  </header>
+  <section class="hero"><div><div class="eyebrow">Your learning space</div><h1>Knowledge on<br>the big screen.</h1><p>Choose a playlist and start learning. New playlists added to your GitHub list appear here automatically.</p></div><div class="hero-mark" aria-hidden="true">▶</div></section>
+  <div class="section-head"><h2>Explore playlists</h2><span id="itemCount"></span></div>
+  <section id="library" class="grid" aria-live="polite"><div class="loading">Loading your learning library…</div></section>
+  <div class="status" id="statusText" aria-live="polite"></div>
+  <footer class="footer"><span id="footerName">Educational TV</span><span>Use your TV remote to navigate</span></footer>
+</main>
+<section class="player-screen" id="playerScreen" aria-label="Video player"><div class="player-top"><div class="player-heading"><strong id="playingTitle">Now playing</strong><small>Press Back / Escape to return to the library</small></div><button class="close-btn" id="closePlayer" type="button">✕ &nbsp; Back</button></div><div class="video-area"><div id="youtubePlayer"></div></div></section>
+<script>
+(() => {
+  "use strict";
+  // These URLs are public files in the GitHub Pages site. Keep the API key OUT of this repository.
+  const PLAYLISTS_URL = "https://kumarbijoy143.github.io/EducationalApp/playlists.txt";
+  const APP_NAME = "Educational TV";
+  const library = document.getElementById("library");
+  const playerScreen = document.getElementById("playerScreen");
+  const playingTitle = document.getElementById("playingTitle");
+  const statusText = document.getElementById("statusText");
+  let ytPlayer = null, selectedIndex = 0, cards = [], playlistEntries = [];
+
+  document.title = APP_NAME;
+  document.getElementById("appName").textContent = APP_NAME;
+  document.getElementById("footerName").textContent = APP_NAME;
+
+  function safeText(value) { return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  function getPlaylistId(raw) {
+    try {
+      const u = new URL(raw.trim());
+      const list = u.searchParams.get("list");
+      if (list && /^[A-Za-z0-9_-]{10,}$/.test(list)) return list;
+      // Accept a bare playlist ID as well as a full YouTube playlist/watch/share URL.
+      if (!u.hostname && /^[A-Za-z0-9_-]{10,}$/.test(raw.trim())) return raw.trim();
+    } catch (_) {
+      if (/^[A-Za-z0-9_-]{10,}$/.test(raw.trim())) return raw.trim();
+    }
+    return "";
+  }
+  function showEmpty(title, message) {
+    library.className = "";
+    library.innerHTML = `<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📚</div><h3>${safeText(title)}</h3><p>${safeText(message)}</p></div>`;
+    document.getElementById("itemCount").textContent = "";
+  }
+  function parsePlaylistFile(text) {
+    const seen = new Set(), result = [];
+    text.split(/\r?\n/).forEach(line => {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) return;
+      // Optional format: A custom title | https://www.youtube.com/playlist?list=...
+      const parts = trimmed.split("|");
+      const possibleTitle = parts.length > 1 ? parts[0].trim() : "";
+      const link = parts.length > 1 ? parts.slice(1).join("|").trim() : trimmed;
+      const playlistId = getPlaylistId(link);
+      if (!playlistId || seen.has(playlistId)) return;
+      seen.add(playlistId);
+      result.push({ playlistId, title: possibleTitle || `YouTube Playlist ${result.length + 1}`, thumbnail: "", customTitle: !!possibleTitle });
+    });
+    return result;
+  }
+  function getApiKey() {
+    // Sketchware Android app supplies this through a trusted WebView JavaScript bridge.
+    // The key is stored in the APK, not in GitHub files.
+    try {
+      if (window.AndroidBridge && typeof window.AndroidBridge.getApiKey === "function") return String(window.AndroidBridge.getApiKey() || "");
+    } catch (e) { console.warn("Android API bridge unavailable", e); }
+    return "";
+  }
+  async function addYouTubeDetails(entries) {
+    const apiKey = getApiKey();
+    if (!apiKey || !entries.length) return;
+    for (let i = 0; i < entries.length; i += 50) {
+      const batch = entries.slice(i, i + 50);
+      const ids = batch.map(x => x.playlistId).join(",");
+      const url = "https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=" + encodeURIComponent(ids) + "&key=" + encodeURIComponent(apiKey);
+      const response = await fetch(url);
+      const data = await response.json();
+      if (!response.ok || data.error) throw new Error(data.error?.message || "YouTube API request failed");
+      const byId = new Map((data.items || []).map(x => [x.id, x.snippet || {}]));
+      batch.forEach(item => {
+        const info = byId.get(item.playlistId);
+        if (!info) return;
+        if (!item.customTitle) item.title = info.title || item.title;
+        item.thumbnail = info.thumbnails?.maxres?.url || info.thumbnails?.standard?.url || info.thumbnails?.high?.url || info.thumbnails?.medium?.url || info.thumbnails?.default?.url || "";
+      });
+    }
+  }
+  async function loadLibrary() {
+    const refresh = document.getElementById("refreshBtn");
+    refresh.disabled = true;
+    statusText.textContent = "Checking for new playlists…";
+    showEmpty("Loading playlists", "Connecting to your GitHub playlist list…");
+    try {
+      const response = await fetch(PLAYLISTS_URL + "?v=" + Date.now(), { cache: "no-store" });
+      if (!response.ok) throw new Error("Could not read playlists.txt (HTTP " + response.status + ")");
+      const text = await response.text();
+      playlistEntries = parsePlaylistFile(text);
+      if (!playlistEntries.length) {
+        showEmpty("Your playlist library is empty", "Open playlists.txt in your GitHub repository and paste one YouTube playlist link on each line. Save the file, then press Refresh here.");
+        statusText.textContent = "No playlist links found.";
+        return;
+      }
+      try { await addYouTubeDetails(playlistEntries); }
+      catch (err) { console.warn(err); statusText.textContent = "Playlist links loaded; some titles or thumbnails could not be fetched. Check the API key and quota."; }
+      renderLibrary();
+      if (!statusText.textContent) statusText.textContent = "Library updated.";
+    } catch (err) {
+      console.error(err);
+      showEmpty("Unable to load playlists", "Check your internet connection and confirm that GitHub Pages is enabled and playlists.txt exists at the repository root. Then press Refresh.");
+      statusText.textContent = err.message;
+    } finally { refresh.disabled = false; }
+  }
+  function renderLibrary() {
+    library.className = "grid";
+    library.innerHTML = "";
+    document.getElementById("itemCount").textContent = `${playlistEntries.length} ${playlistEntries.length === 1 ? "playlist" : "playlists"}`;
+    playlistEntries.forEach((item, index) => {
+      const card = document.createElement("button");
+      card.type = "button"; card.className = "card"; card.dataset.index = index;
+      const fallback = "https://i.ytimg.com/vi/" + encodeURIComponent("dQw4w9WgXcQ") + "/hqdefault.jpg";
+      const thumb = item.thumbnail || fallback;
+      card.innerHTML = `<div class="thumb"><img loading="lazy" src="${safeText(thumb)}" alt=""><span class="play-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></svg></span></div><div class="card-body"><div class="card-title">${safeText(item.title)}</div><div class="card-meta">YouTube · Open playlist</div></div>`;
+      card.addEventListener("click", () => playPlaylist(item));
+      library.appendChild(card);
+    });
+    cards = [...library.querySelectorAll(".card")];
+    focusCard(Math.min(selectedIndex, cards.length - 1));
+  }
+  function focusCard(index) {
+    if (!cards.length) return;
+    selectedIndex = (index + cards.length) % cards.length;
+    cards.forEach((c, i) => c.classList.toggle("focused", i === selectedIndex));
+    cards[selectedIndex].focus({ preventScroll: true });
+  }
+  function playPlaylist(item) {
+    playingTitle.textContent = item.title;
+    playerScreen.classList.add("open");
+    document.body.style.overflow = "hidden";
+    if (ytPlayer && typeof ytPlayer.loadPlaylist === "function") {
+      ytPlayer.loadPlaylist({ listType: "playlist", list: item.playlistId, index: 0 });
+      ytPlayer.playVideo();
+    } else loadYouTubeApi(item.playlistId);
+  }
+  function loadYouTubeApi(playlistId) {
+    const start = () => {
+      if (!window.YT || !YT.Player) { setTimeout(start, 120); return; }
+      if (!ytPlayer) {
+        ytPlayer = new YT.Player("youtubePlayer", { width: "100%", height: "100%", playerVars: { listType: "playlist", list: playlistId, autoplay: 1, controls: 1, rel: 0, playsinline: 1, iv_load_policy: 3 }, events: { onReady: e => e.target.playVideo() } });
+      } else { ytPlayer.loadPlaylist({ listType: "playlist", list: playlistId, index: 0 }); ytPlayer.playVideo(); }
+    };
+    if (window.YT && window.YT.Player) { start(); return; }
+    if (!document.getElementById("yt-api")) { const s = document.createElement("script"); s.id = "yt-api"; s.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(s); }
+    const previous = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { if (typeof previous === "function") previous(); start(); };
+  }
+  function closePlayback() {
+    playerScreen.classList.remove("open"); document.body.style.overflow = "";
+    if (ytPlayer && typeof ytPlayer.pauseVideo === "function") ytPlayer.pauseVideo();
+    focusCard(selectedIndex);
+  }
+  document.getElementById("refreshBtn").addEventListener("click", loadLibrary);
+  document.getElementById("closePlayer").addEventListener("click", closePlayback);
+  document.addEventListener("keydown", e => {
+    if (playerScreen.classList.contains("open")) { if (["Escape", "Backspace", "BrowserBack"].includes(e.key)) { e.preventDefault(); closePlayback(); } return; }
+    if (!cards.length) { if (e.key === "Enter") loadLibrary(); return; }
+    const cols = getComputedStyle(library).gridTemplateColumns.split(" ").length || 1;
+    if (e.key === "ArrowRight") { e.preventDefault(); focusCard(selectedIndex + 1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); focusCard(selectedIndex - 1); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); focusCard(selectedIndex + cols); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); focusCard(selectedIndex - cols); }
+    else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); cards[selectedIndex].click(); }
+  });
+  window.addEventListener("load", loadLibrary);
+})();
+</script>
+</body>
+</html>
