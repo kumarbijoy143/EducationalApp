@@ -4,6 +4,7 @@
 <meta charset="utf-8">  
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">  
 <meta name="theme-color" content="#090d18">  
+<meta name="referrer" content="strict-origin-when-cross-origin">  
 <title>Educational TV</title>  
 <link rel="preconnect" href="https://fonts.googleapis.com">  
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
@@ -12,190 +13,408 @@
 :root{  
   --bg:#090d18;  
   --panel:#111a2b;  
-  --line:rgba(255,255,255,.12);  
+  --line:rgba(255,255,255,.09);  
   --text:#f4f7ff;  
   --muted:#9ba9c1;  
   --accent:#65b8ff;  
-  --radius:16px  
+  --radius:18px  
 }  
 *{box-sizing:border-box}  
 html,body{  
-  margin:0;padding:0;width:100%;height:100%;  
+  margin:0;min-height:100%;  
   background:var(--bg);color:var(--text);  
-  font-family:Inter,Arial,sans-serif;
-  overflow:hidden;
+  font-family:Inter,Arial,sans-serif  
 }  
 body{  
+  min-height:100vh;  
   background:  
     radial-gradient(ellipse at 12% 0%,rgba(56,115,190,.2),transparent 42%),  
     radial-gradient(ellipse at 95% 90%,rgba(112,80,190,.14),transparent 38%),  
     var(--bg);  
+  overflow-x:hidden  
 }  
 button{font:inherit;color:inherit}  
 
-/* TV Navigation Focus Ring */
-button:focus, .card.focused, .tv-focused {  
-  outline:4px solid #65b8ff !important;  
-  outline-offset:3px !important;
-  box-shadow:0 0 20px rgba(101,184,255,0.6) !important;
-  transform:scale(1.03);
+/* Unified TV Remote Focus Ring */
+button:focus-visible, .tv-focused {  
+  outline:3px solid #ffffff !important;  
+  outline-offset:4px !important;  
+  border-color:var(--accent) !important;  
+  box-shadow:0 0 0 6px #65b8ff40 !important;  
+  transform:translateY(-2px);  
 }  
 
 .app{  
-  width:100%;height:100vh;
-  padding:24px 40px;
-  overflow-y:auto;
+  width:min(1500px,100%);  
+  margin:auto;  
+  padding:28px 4.2vw 54px  
 }  
 .topbar{  
   display:flex;align-items:center;justify-content:space-between;  
-  margin-bottom:24px  
+  gap:24px;margin-bottom:34px  
 }  
 .brand{display:flex;align-items:center;gap:14px}  
 .logo{  
-  width:44px;height:44px;border-radius:12px;  
+  width:48px;height:48px;border-radius:15px;  
   display:grid;place-items:center;  
   background:linear-gradient(135deg,#238bdc,#7566ed);  
+  box-shadow:0 8px 28px #2376c344  
 }  
-.logo svg{width:22px;height:22px}  
-.brand-name{font-size:20px;font-weight:800}  
-.brand-sub{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}  
-.refresh{  
-  border:1px solid var(--line);background:#ffffff15;  
-  color:var(--text);padding:10px 18px;border-radius:999px;font-size:13px;cursor:pointer;
+.logo svg{width:25px;height:25px}  
+.brand-name{font-size:19px;font-weight:800;letter-spacing:-.5px}  
+.brand-sub{  
+  font-size:11px;color:var(--muted);  
+  margin-top:4px;letter-spacing:1.5px;text-transform:uppercase  
 }  
-
-.hero{margin-bottom:20px}  
-.eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase}  
-h1{font-size:36px;margin:6px 0 0;font-weight:800;line-height:1.1}  
-
-.browse-bar{display:none;align-items:center;gap:16px;margin:10px 0 20px}  
+.top-actions{display:flex;align-items:center;gap:12px}  
+.pill,.refresh{  
+  border:1px solid var(--line);background:#ffffff08;  
+  color:var(--muted);padding:10px 15px;  
+  border-radius:999px;font-size:12px  
+}  
+.refresh{cursor:pointer;color:var(--text)}  
+.refresh:disabled{opacity:.5;cursor:wait}  
+.hero{  
+  display:flex;align-items:flex-end;justify-content:space-between;  
+  gap:24px;margin-bottom:28px  
+}  
+.eyebrow{  
+  color:var(--accent);font-size:11px;font-weight:800;  
+  letter-spacing:2.2px;text-transform:uppercase;margin-bottom:12px  
+}  
+h1{  
+  font-size:clamp(32px,4.3vw,58px);  
+  line-height:1.04;letter-spacing:-2px;  
+  margin:0;font-weight:800  
+}  
+.hero p{  
+  color:var(--muted);font-size:15px;line-height:1.6;  
+  margin:13px 0 0;max-width:570px  
+}  
+.hero-mark{  
+  font-size:clamp(48px,7vw,92px);  
+  opacity:.18;line-height:1;user-select:none  
+}  
+.browse-bar{  
+  display:none;align-items:center;gap:16px;  
+  margin:12px 0 28px  
+}  
 .browse-bar.visible{display:flex}  
 .back-library{  
-  border:1px solid var(--line);background:#ffffff15;border-radius:10px;  
-  padding:10px 18px;cursor:pointer;font-weight:700;color:#fff;
+  flex-shrink:0;border:1px solid var(--line);  
+  background:#ffffff12;border-radius:12px;  
+  padding:12px 17px;cursor:pointer;font-weight:600  
 }  
-.browse-title strong{font-size:18px;display:block}  
+.browse-title{min-width:0}  
+.browse-title strong{  
+  display:block;font-size:19px;  
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis  
+}  
 .browse-title small{color:var(--muted);font-size:11px}  
-
-.section-head{display:flex;align-items:center;justify-content:space-between;margin:20px 0 14px}  
+.section-head{  
+  display:flex;align-items:center;justify-content:space-between;  
+  margin:34px 0 16px  
+}  
 .section-head h2{font-size:18px;margin:0;font-weight:700}  
 .section-head span{font-size:12px;color:var(--muted)}  
-
 .grid{  
-  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;  
+  display:grid;  
+  grid-template-columns:repeat(4,minmax(0,1fr));  
+  gap:18px  
 }  
 .card{  
-  text-align:left;border:1px solid var(--line);border-radius:var(--radius);  
-  overflow:hidden;background:#131c2e;padding:0;cursor:pointer;  
-  transition:transform .15s ease, border-color .15s ease;  
+  min-width:0;text-align:left;  
+  border:1px solid var(--line);  
+  border-radius:var(--radius);overflow:hidden;  
+  background:linear-gradient(145deg,#17243a,#101827);  
+  padding:0;cursor:pointer;  
+  transition:transform .18s,border-color .18s,box-shadow .18s;  
+  outline:none  
 }  
-.thumb{aspect-ratio:16/9;background:#060a12;position:relative;overflow:hidden}  
-.thumb img{width:100%;height:100%;object-fit:cover;display:block}  
-.card-body{padding:12px 14px}  
+.card:hover{  
+  transform:translateY(-3px);  
+  border-color:#65b8ff77  
+}  
+.thumb{  
+  aspect-ratio:16/9;  
+  background:linear-gradient(135deg,#1b4774,#292650);  
+  position:relative;overflow:hidden  
+}  
+.thumb img{  
+  width:100%;  
+  height:100%;  
+  object-fit:contain;  
+  display:block;  
+  background:#080d18;  
+}  
+.thumb:after{  
+  content:"";position:absolute;inset:45% 0 0;  
+  background:linear-gradient(transparent,#07101ddd);  
+  pointer-events:none  
+}  
+
+/* Watch Progress Bar on Video Thumbnails */
+.progress-track{
+  position:absolute;left:0;right:0;bottom:0;
+  height:5px;background:rgba(255,255,255,.22);z-index:2;
+}
+.progress-fill{
+  height:100%;background:#ff3b3b;transition:width .2s ease;
+}
+.resume-pill{
+  position:absolute;left:10px;bottom:12px;z-index:2;
+  background:rgba(9,13,24,.88);border:1px solid rgba(101,184,255,.45);
+  color:#b8dfff;font-size:10px;font-weight:700;
+  padding:4px 8px;border-radius:6px;
+}
+
+.folder-cover{  
+  width:100%;height:100%;  
+  display:flex;flex-direction:column;  
+  align-items:center;justify-content:center;  
+  background:linear-gradient(135deg,#1c3b64,#2a2356);  
+  gap:8px;  
+}  
+.folder-icon{font-size:44px;line-height:1}  
+.folder-count-badge{  
+  font-size:11px;font-weight:700;letter-spacing:1px;  
+  text-transform:uppercase;color:#b8dfff;  
+  background:#00000044;padding:4px 10px;border-radius:999px;  
+}  
+.play-badge{  
+  position:absolute;z-index:1;right:13px;bottom:12px;  
+  width:38px;height:38px;border-radius:50%;  
+  display:grid;place-items:center;  
+  background:#fff;color:#111;box-shadow:0 4px 15px #0006  
+}  
+.play-badge svg{width:15px;height:15px;margin-left:2px}  
+.card-body{padding:15px 16px 17px}  
 .card-title{  
-  font-size:14px;font-weight:700;line-height:1.35;  
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:38px  
+  font-size:15px;font-weight:700;line-height:1.35;  
+  display:-webkit-box;-webkit-line-clamp:2;  
+  -webkit-box-orient:vertical;overflow:hidden;  
+  min-height:40px  
 }  
-.card-meta{color:var(--muted);font-size:11px;margin-top:6px}  
-.empty,.loading{color:var(--muted);padding:30px;text-align:center}  
-
-/* TV FULLSCREEN PLAYER */  
+.card-meta{color:var(--muted);font-size:11px;margin-top:9px}  
+.empty{  
+  border:1px dashed #ffffff2b;border-radius:20px;  
+  padding:34px 24px;text-align:center;background:#ffffff05  
+}  
+.empty-icon{font-size:34px;margin-bottom:12px}  
+.empty h3{font-size:18px;margin:0 0 8px}  
+.empty p{  
+  font-size:13px;line-height:1.65;color:var(--muted);  
+  max-width:650px;margin:0 auto  
+}  
+.loading{color:var(--muted);padding:25px;text-align:center}  
+.status{  
+  color:var(--muted);font-size:12px;  
+  margin-top:12px;text-align:center;min-height:18px  
+}  
+.footer{  
+  margin-top:42px;padding-top:18px;  
+  border-top:1px solid var(--line);  
+  display:flex;justify-content:space-between;gap:15px;  
+  color:#72819b;font-size:11px  
+}  
+  
+/* TV TRUE FULLSCREEN OVERLAY */  
 .player-screen{  
-  display:none;position:fixed;inset:0;width:100vw;height:100vh;  
-  z-index:99999;background:#000;overflow:hidden;  
+  display:none;  
+  position:fixed;  
+  inset:0;  
+  width:100vw;  
+  height:100vh;  
+  z-index:99999;  
+  background:#000000;  
+  padding:0;  
+  margin:0;  
+  flex-direction:column;  
+  overflow:hidden;  
 }  
-.player-screen.open{display:block}  
+.player-screen.open{display:flex}  
 
-.video-container{width:100vw;height:100vh;position:relative}  
-#youtubePlayer{width:100%;height:100%;border:0;pointer-events:none}  
-
-/* Floating UI Controls */  
-.player-ui{  
-  position:absolute;inset:0;z-index:10;  
-  display:flex;flex-direction:column;justify-content:space-between;  
-  padding:24px 36px;pointer-events:none;  
-  transition:opacity .3s ease;  
+.player-top{  
+  position:absolute;  
+  top:0;left:0;right:0;  
+  z-index:20;  
+  display:flex;  
+  align-items:center;  
+  justify-content:space-between;  
+  gap:18px;  
+  padding:20px 32px;  
+  background:linear-gradient(180deg, rgba(0,0,0,0.88) 0%, transparent 100%);  
+  transition:opacity .35s ease;  
+  pointer-events:none;  
 }  
-.player-screen.hide-ui .player-ui{opacity:0}  
-
-.player-header{  
-  display:flex;align-items:center;justify-content:space-between;  
-  background:linear-gradient(180deg,rgba(0,0,0,0.85) 0%,transparent 100%);  
-  margin:-24px -36px 0;padding:24px 36px;pointer-events:auto;  
+.player-top button, .player-heading {  
+  pointer-events:auto;  
+}  
+.player-heading{min-width:0}  
+.player-heading strong{  
+  font-size:19px;display:block;  
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;  
+  color:#fff;  
+}  
+.player-heading small{  
+  display:block;color:var(--muted);  
+  margin-top:4px;font-size:12px  
 }  
 .close-btn,.player-control{  
-  border:1px solid rgba(255,255,255,0.3);background:rgba(20,28,45,0.85);  
-  border-radius:12px;padding:12px 22px;cursor:pointer;color:#fff;font-weight:700;font-size:14px;  
+  border:1px solid #ffffff3a;  
+  background:#141c2de6;border-radius:12px;  
+  padding:11px 20px;cursor:pointer;  
+  color:#fff;  
 }  
-.player-footer{  
-  display:flex;flex-direction:column;align-items:center;gap:12px;  
-  background:linear-gradient(0deg,rgba(0,0,0,0.85) 0%,transparent 100%);  
-  margin:0 -36px -24px;padding:16px 36px 24px;pointer-events:auto;  
+
+.video-area{  
+  width:100vw;  
+  height:100vh;  
+  position:relative;  
+  background:#000;  
+  display:flex;  
+  align-items:center;  
+  justify-content:center;  
 }  
-.player-controls{display:flex;gap:16px}  
-.player-status{color:var(--muted);font-size:13px}  
+#youtubePlayer{  
+  width:100% !important;  
+  height:100% !important;  
+  border:0;  
+  background:#000;  
+  pointer-events:none;  
+}  
+
+.player-controls{  
+  position:absolute;  
+  bottom:0;left:0;right:0;  
+  z-index:20;  
+  display:flex;  
+  justify-content:center;  
+  align-items:center;  
+  gap:16px;  
+  padding:20px;  
+  background:linear-gradient(0deg, rgba(0,0,0,0.88) 0%, transparent 100%);  
+  transition:opacity .35s ease;  
+}  
+.player-control{  
+  min-width:115px;font-size:14px;font-weight:600  
+}  
+.player-control.primary{  
+  background:#247fc3;border-color:#247fc3  
+}  
+.player-control:disabled{opacity:.35;cursor:not-allowed}  
+.player-status{  
+  color:var(--muted);font-size:12px;  
+  text-align:center;min-height:17px;  
+  position:absolute;  
+  bottom:75px;left:0;right:0;  
+  z-index:21;  
+  pointer-events:none;  
+  transition:opacity .35s ease;  
+}  
+
+.player-screen.hide-ui .player-top,  
+.player-screen.hide-ui .player-controls,  
+.player-screen.hide-ui .player-status {  
+  opacity:0;  
+  pointer-events:none;  
+}  
+  
+@media(max-width:1000px){  
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}  
+  .app{padding-left:3vw;padding-right:3vw}  
+}  
+@media(max-width:700px){  
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}  
+  .app{padding:18px 16px 36px}  
+  .topbar{margin-bottom:28px}  
+  .hero-mark{display:none}  
+  .hero p{font-size:13px}  
+  .card-body{padding:12px}  
+  .card-title{font-size:13px}  
+  .pill{display:none}  
+}  
+@media(max-width:420px){  
+  .grid{grid-template-columns:1fr 1fr}  
+  .brand-name{font-size:16px}  
+}  
 </style>  
 </head>  
 <body>  
-
 <main class="app" id="home">    
   <header class="topbar">  
     <div class="brand">  
-      <div class="logo">  
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 5.5v15M8 7h8M8 11h8"/></svg>  
+      <div class="logo" aria-hidden="true">  
+        <svg viewBox="0 0 24 24" fill="none" stroke="white"  
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">  
+          <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/>  
+          <path d="M4 5.5v15M8 7h8M8 11h8"/>  
+        </svg>  
       </div>  
       <div>  
-        <div class="brand-name">Educational TV</div>  
-        <div class="brand-sub">Classroom Learning</div>  
+        <div class="brand-name" id="appName">Educational TV</div>  
+        <div class="brand-sub">Learn • Explore • Grow</div>  
       </div>  
     </div>  
-    <button class="refresh" id="refreshBtn" type="button">↻ Refresh Library</button>  
+    <div class="top-actions">  
+      <div class="pill">TV-friendly learning library</div>  
+      <button class="refresh" id="refreshBtn" type="button">↻ Refresh</button>  
+    </div>  
   </header>    
 
   <section class="hero" id="hero">  
-    <div class="eyebrow">Smart Board & TV Portal</div>  
-    <h1>Learning Playlists</h1>  
+    <div>  
+      <div class="eyebrow">Your learning space</div>  
+      <h1>Knowledge on<br>the big screen.</h1>  
+      <p>Choose a folder or playlist, browse its videos and select what you want to watch. Your watch progress is saved automatically.</p>  
+    </div>  
+    <div class="hero-mark" aria-hidden="true">▶</div>  
   </section>    
 
   <div class="browse-bar" id="browseBar">  
-    <button class="back-library" id="backToPlaylists" type="button">← Back to Playlists</button>  
+    <button class="back-library" id="backNavBtn" type="button">← Back</button>  
     <div class="browse-title">  
-      <strong id="browsePlaylistTitle">Playlist</strong>  
-      <small>Select video</small>  
+      <strong id="browseTitle">Title</strong>  
+      <small id="browseSub">Choose an item</small>  
     </div>  
   </div>    
 
   <div class="section-head">  
-    <h2 id="sectionTitle">Playlists</h2>  
+    <h2 id="sectionTitle">Explore library</h2>  
     <span id="itemCount"></span>  
   </div>    
 
-  <section id="library" class="grid"></section>  
+  <section id="library" class="grid" aria-live="polite">  
+    <div class="loading">Loading your learning library…</div>  
+  </section>    
+
+  <div class="status" id="statusText" aria-live="polite"></div>    
+
+  <footer class="footer">  
+    <span id="footerName">Educational TV</span>  
+    <span>Use your TV remote to navigate</span>  
+  </footer>  
 </main>  
 
-<!-- Fullscreen TV Player Screen -->  
-<section class="player-screen" id="playerScreen">  
-  <div class="video-container">  
+<section class="player-screen" id="playerScreen" aria-label="Video player">  
+  <div class="player-top">  
+    <div class="player-heading">  
+      <strong id="playingTitle">Now playing</strong>  
+      <small id="playingSubtitle">Press Back / Escape to return to the videos</small>  
+    </div>  
+    <button class="close-btn" id="closePlayer" type="button">✕ &nbsp; Back to Videos</button>  
+  </div>    
+
+  <div class="video-area">  
     <div id="youtubePlayer"></div>  
-  </div>  
+  </div>    
 
-  <div class="player-ui" id="playerUi">  
-    <div class="player-header">  
-      <div>  
-        <strong id="playingTitle" style="font-size:18px;display:block">Now Playing</strong>  
-        <small id="playingSubtitle" style="color:var(--muted)">Educational TV</small>  
-      </div>  
-      <button class="close-btn" id="closePlayer" type="button">✕ Back to Videos</button>  
-    </div>  
+  <div class="player-status" id="playerStatus"></div>  
 
-    <div class="player-footer">  
-      <div class="player-status" id="playerStatus"></div>  
-      <div class="player-controls">  
-        <button class="player-control" id="prevBtn" type="button">◀ Previous</button>  
-        <button class="player-control" id="pauseBtn" type="button">Ⅱ Pause</button>  
-        <button class="player-control" id="nextBtn" type="button">Next ▶</button>  
-      </div>  
-    </div>  
+  <div class="player-controls">  
+    <button class="player-control" id="previousVideo" type="button">◀ Previous</button>  
+    <button class="player-control primary" id="togglePlayback" type="button">Ⅱ Pause</button>  
+    <button class="player-control" id="nextVideo" type="button">Next ▶</button>  
   </div>  
 </section>  
 
@@ -204,30 +423,124 @@ h1{font-size:36px;margin:6px 0 0;font-weight:800;line-height:1.1}
 "use strict";  
   
 const PLAYLISTS_URL = "https://kumarbijoy143.github.io/EducationalApp/playlists.txt";  
+const APP_NAME = "Educational TV";  
+const STORAGE_KEY = "edutv_watch_progress_v1";  
+  
 const library = document.getElementById("library");  
 const playerScreen = document.getElementById("playerScreen");  
 const playingTitle = document.getElementById("playingTitle");  
 const playingSubtitle = document.getElementById("playingSubtitle");  
 const playerStatus = document.getElementById("playerStatus");  
+const statusText = document.getElementById("statusText");  
   
 let ytPlayer = null;  
 let playerReady = false;  
-let playlistEntries = [];  
+let apiLoading = false;  
+  
+let folders = [];  
+let hasFolders = false;  
+let currentFolder = null;  
 let currentPlaylist = null;  
 let currentVideos = [];  
 let currentVideoIndex = 0;  
-let currentView = "playlists"; // "playlists" | "videos" | "player"  
-let selectedGridIndex = 0;  
-let playerFocusedIndex = 0; // 0: Close, 1: Prev, 2: Pause, 3: Next  
+let pendingVideoIndex = 0;  
+  
+let currentView = "folders";  
+let playerIsPlaying = false;  
 let uiHideTimer = null;  
+let progressSaveTimer = null;  
 
-function getPlayerButtons() {  
-  return [  
-    document.getElementById("closePlayer"),  
-    document.getElementById("prevBtn"),  
-    document.getElementById("pauseBtn"),  
-    document.getElementById("nextBtn")  
-  ];  
+let focusArea = "grid";  
+let selectedGridIndex = 0;  
+let playerFocusIndex = 2;  
+  
+document.title = APP_NAME;  
+document.getElementById("appName").textContent = APP_NAME;  
+document.getElementById("footerName").textContent = APP_NAME;  
+
+/* =========================================================  
+   WATCH PROGRESS STORAGE (RESUME SUPPORT)  
+   ========================================================= */  
+
+function loadProgressMap() {  
+  try {  
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");  
+  } catch (e) {  
+    return {};  
+  }  
+}  
+
+function getSavedProgress(videoId) {  
+  const map = loadProgressMap();  
+  return map[videoId] || null; // { time: number, duration: number }  
+}  
+
+function saveVideoProgress(videoId, currentTime, duration) {  
+  if (!videoId || !currentTime || currentTime < 5) return;  
+  try {  
+    const map = loadProgressMap();  
+    // Clear progress if video is within 10 seconds of finishing  
+    if (duration > 0 && (duration - currentTime) <= 10) {  
+      delete map[videoId];  
+    } else {  
+      map[videoId] = {  
+        time: Math.floor(currentTime),  
+        duration: Math.floor(duration || 0),  
+        updatedAt: Date.now()  
+      };  
+    }  
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(map));  
+  } catch (e) {}  
+}  
+
+function clearVideoProgress(videoId) {  
+  try {  
+    const map = loadProgressMap();  
+    delete map[videoId];  
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(map));  
+  } catch (e) {}  
+}  
+
+function formatSeconds(sec) {  
+  sec = Math.max(0, Math.floor(Number(sec) || 0));  
+  const h = Math.floor(sec / 3600);  
+  const m = Math.floor((sec % 3600) / 60);  
+  const s = sec % 60;  
+  if (h > 0) return `${h}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;  
+  return `${m}:${String(s).padStart(2,"0")}`;  
+}  
+
+function recordCurrentPlayback() {  
+  if (!ytPlayer || !playerReady || !currentVideos[currentVideoIndex]) return;  
+  try {  
+    const time = ytPlayer.getCurrentTime();  
+    const dur = ytPlayer.getDuration();  
+    if (time > 5) {  
+      saveVideoProgress(currentVideos[currentVideoIndex].videoId, time, dur);  
+    }  
+  } catch (e) {}  
+}  
+
+function startProgressTracker() {  
+  stopProgressTracker();  
+  progressSaveTimer = setInterval(recordCurrentPlayback, 4000);  
+}  
+
+function stopProgressTracker() {  
+  if (progressSaveTimer) {  
+    clearInterval(progressSaveTimer);  
+    progressSaveTimer = null;  
+  }  
+}  
+  
+function safeText(value) {  
+  return String(value ?? "").replace(/[&<>"']/g, c => ({  
+    "&":"&amp;",  
+    "<":"&lt;",  
+    ">":"&gt;",  
+    '"':"&quot;",  
+    "'":"&#39;"  
+  }[c]));  
 }  
   
 function getApiKey() {  
@@ -235,204 +548,780 @@ function getApiKey() {
     if (window.AndroidBridge && typeof window.AndroidBridge.getApiKey === "function") {  
       return String(window.AndroidBridge.getApiKey() || "");  
     }  
-  } catch (e) {}  
+  } catch (e) {  
+    console.warn("Android API bridge unavailable", e);  
+  }  
   return "";  
 }  
   
-async function loadLibrary() {  
-  library.innerHTML = `<div class="loading">Loading playlists…</div>`;  
+async function apiRequest(url) {  
+  const response = await fetch(url);  
+  const data = await response.json();  
+  if (!response.ok || data.error) {  
+    throw new Error(data.error?.message || "YouTube API request failed");  
+  }  
+  return data;  
+}  
+  
+function setStatus(message) {  
+  statusText.textContent = message || "";  
+}  
+  
+function showEmpty(icon, title, message) {  
+  library.className = "";  
+  library.innerHTML = `  
+    <div class="empty" style="grid-column:1/-1">  
+      <div class="empty-icon">${icon}</div>  
+      <h3>${safeText(title)}</h3>  
+      <p>${safeText(message)}</p>  
+    </div>  
+  `;  
+  document.getElementById("itemCount").textContent = "";  
+}  
+  
+function getPlaylistId(raw) {  
   try {  
-    const res = await fetch(PLAYLISTS_URL + "?v=" + Date.now(), { cache: "no-store" });  
-    const text = await res.text();  
-    playlistEntries = [];  
-    text.split(/\r?\n/).forEach(line => {  
-      const trimmed = line.trim();  
-      if (!trimmed || trimmed.startsWith("#")) return;  
-      const parts = trimmed.split("|");  
-      const title = parts.length > 1 ? parts[0].trim() : "Playlist";  
-      const rawUrl = parts.length > 1 ? parts.slice(1).join("|").trim() : trimmed;  
-      const u = new URL(rawUrl.includes("http") ? rawUrl : "https://youtube.com/playlist?list=" + rawUrl);  
-      const listId = u.searchParams.get("list") || rawUrl;  
-      if (listId) playlistEntries.push({ title, playlistId: listId });  
+    const u = new URL(raw.trim());  
+    const list = u.searchParams.get("list");  
+    if (list && /^[A-Za-z0-9_-]{10,}$/.test(list)) return list;  
+    if (!u.hostname && /^[A-Za-z0-9_-]{10,}$/.test(raw.trim())) return raw.trim();  
+  } catch (_) {  
+    if (/^[A-Za-z0-9_-]{10,}$/.test(raw.trim())) return raw.trim();  
+  }  
+  return "";  
+}  
+  
+function parsePlaylistFile(text) {  
+  const folderMap = new Map();  
+  let activeFolderName = "General";  
+  let explicitFolderCount = 0;  
+  const seenPlaylists = new Set();  
+  const allEntries = [];  
+  
+  text.split(/\r?\n/).forEach(line => {  
+    const trimmed = line.trim();  
+    if (!trimmed) return;  
+  
+    if (trimmed.startsWith("#")) {  
+      const name = trimmed.replace(/^#+\s*/, "").trim();  
+      if (name) {  
+        activeFolderName = name;  
+        explicitFolderCount++;  
+        if (!folderMap.has(activeFolderName)) {  
+          folderMap.set(activeFolderName, []);  
+        }  
+      }  
+      return;  
+    }  
+  
+    const parts = trimmed.split("|");  
+    const possibleTitle = parts.length > 1 ? parts[0].trim() : "";  
+    const link = parts.length > 1 ? parts.slice(1).join("|").trim() : trimmed;  
+    const playlistId = getPlaylistId(link);  
+  
+    if (!playlistId || seenPlaylists.has(playlistId)) return;  
+    seenPlaylists.add(playlistId);  
+  
+    if (!folderMap.has(activeFolderName)) {  
+      folderMap.set(activeFolderName, []);  
+    }  
+  
+    const entry = {  
+      playlistId,  
+      title: possibleTitle || `YouTube Playlist ${allEntries.length + 1}`,  
+      thumbnail: "",  
+      customTitle: !!possibleTitle,  
+      folder: activeFolderName  
+    };  
+  
+    folderMap.get(activeFolderName).push(entry);  
+    allEntries.push(entry);  
+  });  
+  
+  const parsedFolders = [];  
+  folderMap.forEach((playlists, name) => {  
+    if (playlists.length > 0) {  
+      parsedFolders.push({ name, playlists });  
+    }  
+  });  
+  
+  return {  
+    folders: parsedFolders,  
+    allEntries,  
+    hasFolders: explicitFolderCount > 0  
+  };  
+}  
+  
+async function addYouTubeDetails(entries) {  
+  const apiKey = getApiKey();  
+  if (!apiKey || !entries.length) return;  
+  
+  for (let i = 0; i < entries.length; i += 50) {  
+    const batch = entries.slice(i, i + 50);  
+    const ids = batch.map(x => x.playlistId).join(",");  
+    const url = "https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=" + encodeURIComponent(ids) + "&key=" + encodeURIComponent(apiKey);  
+    const data = await apiRequest(url);  
+    const byId = new Map((data.items || []).map(x => [x.id, x.snippet || {}]));  
+  
+    batch.forEach(item => {  
+      const info = byId.get(item.playlistId);  
+      if (!info) return;  
+      if (!item.customTitle) item.title = info.title || item.title;  
+      item.thumbnail =  
+        info.thumbnails?.maxres?.url ||  
+        info.thumbnails?.standard?.url ||  
+        info.thumbnails?.high?.url ||  
+        info.thumbnails?.medium?.url ||  
+        info.thumbnails?.default?.url || "";  
     });  
-    renderPlaylists();  
-  } catch (e) {  
-    library.innerHTML = `<div class="empty">Failed to load playlists.txt</div>`;  
   }  
 }  
   
-function renderPlaylists() {  
-  currentView = "playlists";  
+async function loadLibrary() {  
+  const refresh = document.getElementById("refreshBtn");  
+  refresh.disabled = true;  
+  currentFolder = null;  
+  currentPlaylist = null;  
+  
   document.getElementById("hero").style.display = "";  
   document.getElementById("browseBar").classList.remove("visible");  
-  document.getElementById("sectionTitle").textContent = "Playlists";  
-  document.getElementById("itemCount").textContent = `${playlistEntries.length} playlists`;  
+  document.getElementById("sectionTitle").textContent = "Explore library";  
+  setStatus("Checking for new playlists…");  
+  showEmpty("📚", "Loading library", "Connecting to your GitHub playlist list…");  
   
-  library.innerHTML = "";  
-  playlistEntries.forEach((p, idx) => {  
-    const card = document.createElement("button");  
-    card.className = "card";  
-    card.innerHTML = `  
-      <div class="thumb"><img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt=""></div>  
-      <div class="card-body"><div class="card-title">${p.title}</div><div class="card-meta">Click to open</div></div>  
-    `;  
-    card.onclick = () => openPlaylist(p);  
-    library.appendChild(card);  
-  });  
-  focusGridCard(0);  
+  try {  
+    const response = await fetch(PLAYLISTS_URL + "?v=" + Date.now(), { cache: "no-store" });  
+    if (!response.ok) throw new Error("Could not read playlists.txt (HTTP " + response.status + ")");  
+    const text = await response.text();  
+    const parsed = parsePlaylistFile(text);  
+  
+    folders = parsed.folders;  
+    hasFolders = parsed.hasFolders;  
+  
+    if (!parsed.allEntries.length) {  
+      showEmpty("📚", "Your library is empty", "Open playlists.txt in your GitHub repository and paste YouTube playlist links.");  
+      setStatus("No playlist links found.");  
+      return;  
+    }  
+  
+    try {  
+      await addYouTubeDetails(parsed.allEntries);  
+    } catch (err) {  
+      console.warn(err);  
+      setStatus("Playlist links loaded, some YouTube details could not be fetched.");  
+    }  
+  
+    if (hasFolders) {  
+      renderFolders();  
+    } else {  
+      currentFolder = folders[0];  
+      renderPlaylists(folders[0], false);  
+    }  
+  
+    if (!statusText.textContent) setStatus("Library updated.");  
+  } catch (err) {  
+    console.error(err);  
+    showEmpty("📚", "Unable to load library", err.message);  
+    setStatus("Connection error.");  
+  } finally {  
+    refresh.disabled = false;  
+  }  
 }  
   
-async function openPlaylist(p) {  
-  currentPlaylist = p;  
+function renderFolders() {  
+  currentView = "folders";  
+  currentFolder = null;  
+  currentPlaylist = null;  
+  
+  document.getElementById("hero").style.display = "";  
+  document.getElementById("browseBar").classList.remove("visible");  
+  document.getElementById("sectionTitle").textContent = "Folders";  
+  document.getElementById("itemCount").textContent = `${folders.length} ${folders.length === 1 ? "folder" : "folders"}`;  
+  
+  library.className = "grid";  
+  library.innerHTML = "";  
+  
+  folders.forEach((folder, index) => {  
+    const card = document.createElement("button");  
+    card.type = "button";  
+    card.className = "card";  
+    card.dataset.index = index;  
+  
+    const previewThumb = folder.playlists.find(p => p.thumbnail)?.thumbnail;  
+    const countLabel = `${folder.playlists.length} ${folder.playlists.length === 1 ? "playlist" : "playlists"}`;  
+  
+    card.innerHTML = `  
+      <div class="thumb">  
+        ${previewThumb  
+          ? `<img loading="lazy" src="${safeText(previewThumb)}" alt="">`  
+          : `<div class="folder-cover"><div class="folder-icon">📁</div><span class="folder-count-badge">${safeText(countLabel)}</span></div>`  
+        }  
+        <span class="play-badge">📁</span>  
+      </div>  
+      <div class="card-body">  
+        <div class="card-title">${safeText(folder.name)}</div>  
+        <div class="card-meta">${safeText(countLabel)} · Open folder</div>  
+      </div>  
+    `;  
+    card.addEventListener("click", () => renderPlaylists(folder, true));  
+    library.appendChild(card);  
+  });  
+  
+  focusGrid(0);  
+}  
+  
+function renderPlaylists(folder, showFolderNav) {  
+  currentView = "playlists";  
+  currentFolder = folder;  
+  currentPlaylist = null;  
+  
+  library.className = "grid";  
+  library.innerHTML = "";  
+  
+  if (showFolderNav) {  
+    document.getElementById("hero").style.display = "none";  
+    const browseBar = document.getElementById("browseBar");  
+    browseBar.classList.add("visible");  
+    document.getElementById("backNavBtn").textContent = "← Folders";  
+    document.getElementById("browseTitle").textContent = folder.name;  
+    document.getElementById("browseSub").textContent = "Choose a playlist";  
+  } else {  
+    document.getElementById("hero").style.display = "";  
+    document.getElementById("browseBar").classList.remove("visible");  
+  }  
+  
+  document.getElementById("sectionTitle").textContent = showFolderNav ? "Playlists in folder" : "Explore playlists";  
+  document.getElementById("itemCount").textContent = `${folder.playlists.length} ${folder.playlists.length === 1 ? "playlist" : "playlists"}`;  
+  
+  folder.playlists.forEach((item, index) => {  
+    const card = document.createElement("button");  
+    card.type = "button";  
+    card.className = "card";  
+    card.dataset.index = index;  
+  
+    const fallback = "https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg";  
+    const thumb = item.thumbnail || fallback;  
+  
+    card.innerHTML = `  
+      <div class="thumb">  
+        <img loading="lazy" src="${safeText(thumb)}" alt="">  
+        <span class="play-badge">  
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>  
+        </span>  
+      </div>  
+      <div class="card-body">  
+        <div class="card-title">${safeText(item.title)}</div>  
+        <div class="card-meta">YouTube · Browse videos</div>  
+      </div>  
+    `;  
+    card.addEventListener("click", () => openPlaylist(item));  
+    library.appendChild(card);  
+  });  
+  
+  focusGrid(0);  
+}  
+  
+async function openPlaylist(item) {  
+  currentPlaylist = item;  
+  currentVideos = [];  
   currentView = "videos";  
+  
   document.getElementById("hero").style.display = "none";  
-  document.getElementById("browseBar").classList.add("visible");  
-  document.getElementById("browsePlaylistTitle").textContent = p.title;  
+  const browseBar = document.getElementById("browseBar");  
+  browseBar.classList.add("visible");  
+  document.getElementById("backNavBtn").textContent = "← Playlists";  
+  document.getElementById("browseTitle").textContent = item.title;  
+  document.getElementById("browseSub").textContent = "Choose a video to watch";  
   document.getElementById("sectionTitle").textContent = "Videos";  
-  library.innerHTML = `<div class="loading">Loading videos…</div>`;  
+  setStatus("");  
   
+  showEmpty("🎬", "Loading videos", "Getting the videos from this playlist…");  
+  focusHeaderBtn();  
+  
+  try {  
+    currentVideos = await fetchPlaylistVideos(item.playlistId);  
+    if (!currentVideos.length) {  
+      showEmpty("🎬", "No videos found", "This playlist may be empty, private or unavailable.");  
+      return;  
+    }  
+    renderVideos(0);  
+    setStatus(`${currentVideos.length} videos loaded.`);  
+  } catch (err) {  
+    console.error(err);  
+    showEmpty("🎬", "Unable to load videos", err.message);  
+    setStatus("Video loading failed.");  
+  }  
+}  
+  
+async function fetchPlaylistVideos(playlistId) {  
   const apiKey = getApiKey();  
-  const res = await fetch(`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=${encodeURIComponent(p.playlistId)}&key=${apiKey}`);  
-  const data = await res.json();  
-  currentVideos = (data.items || []).map(i => ({  
-    videoId: i.snippet?.resourceId?.videoId || i.contentDetails?.videoId,  
-    title: i.snippet?.title || "Video",  
-    thumb: i.snippet?.thumbnails?.medium?.url || ""  
-  })).filter(v => v.videoId);  
+  if (!apiKey) throw new Error("YouTube API key not received from AndroidBridge");  
   
+  let allItems = [];  
+  let pageToken = "";  
+  
+  do {  
+    let url = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=" + encodeURIComponent(playlistId) + "&key=" + encodeURIComponent(apiKey);  
+    if (pageToken) url += "&pageToken=" + encodeURIComponent(pageToken);  
+    const data = await apiRequest(url);  
+    allItems = allItems.concat(data.items || []);  
+    pageToken = data.nextPageToken || "";  
+  } while (pageToken);  
+  
+  const videos = allItems  
+    .map(item => {  
+      const snippet = item.snippet || {};  
+      const videoId = snippet.resourceId?.videoId || item.contentDetails?.videoId || "";  
+      if (!videoId) return null;  
+      const thumbnails = snippet.thumbnails || {};  
+      return {  
+        videoId,  
+        title: snippet.title || "Untitled video",  
+        thumbnail:  
+          thumbnails.maxres?.url ||  
+          thumbnails.standard?.url ||  
+          thumbnails.high?.url ||  
+          thumbnails.medium?.url ||  
+          thumbnails.default?.url ||  
+          `https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`,  
+        duration: "",  
+        position: snippet.position ?? 0  
+      };  
+    })  
+    .filter(Boolean);  
+  
+  for (let i = 0; i < videos.length; i += 50) {  
+    const batch = videos.slice(i, i + 50);  
+    const ids = batch.map(v => v.videoId).join(",");  
+    const url = "https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=" + encodeURIComponent(ids) + "&key=" + encodeURIComponent(apiKey);  
+    try {  
+      const data = await apiRequest(url);  
+      const durationMap = new Map((data.items || []).map(v => [v.id, v.contentDetails?.duration || ""]));  
+      batch.forEach(video => {  
+        video.duration = formatDuration(durationMap.get(video.videoId) || "");  
+      });  
+    } catch (err) {  
+      console.warn("Could not fetch video durations", err);  
+    }  
+  }  
+  return videos;  
+}  
+  
+function formatDuration(iso) {  
+  if (!iso) return "";  
+  const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);  
+  if (!match) return "";  
+  const hours = Number(match[1] || 0);  
+  const minutes = Number(match[2] || 0);  
+  const seconds = Number(match[3] || 0);  
+  if (hours) return `${hours}:${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;  
+  return `${minutes}:${String(seconds).padStart(2,"0")}`;  
+}  
+  
+function renderVideos(focusIdx = 0) {  
+  currentView = "videos";  
+  library.className = "grid";  
   library.innerHTML = "";  
   document.getElementById("itemCount").textContent = `${currentVideos.length} videos`;  
-  currentVideos.forEach((v, idx) => {  
+  
+  currentVideos.forEach((video, index) => {  
     const card = document.createElement("button");  
+    card.type = "button";  
     card.className = "card";  
+    card.dataset.index = index;  
+
+    const saved = getSavedProgress(video.videoId);  
+    const pct = (saved && saved.duration > 0)  
+      ? Math.min(100, Math.round((saved.time / saved.duration) * 100))  
+      : 0;  
+
+    const metaParts = [`Video ${index + 1}`];  
+    if (video.duration) metaParts.push(video.duration);  
+    if (saved && saved.time > 5) metaParts.push(`Resume ${formatSeconds(saved.time)}`);  
+  
     card.innerHTML = `  
-      <div class="thumb"><img src="${v.thumb}" alt=""></div>  
-      <div class="card-body"><div class="card-title">${v.title}</div><div class="card-meta">Video ${idx+1}</div></div>  
+      <div class="thumb">  
+        <img loading="lazy" src="${safeText(video.thumbnail)}" alt="">  
+        ${saved && saved.time > 5 ? `<span class="resume-pill">⏯ ${safeText(formatSeconds(saved.time))}</span>` : ""}  
+        <span class="play-badge">  
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>  
+        </span>  
+        ${pct > 0 ? `<div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>` : ""}  
+      </div>  
+      <div class="card-body">  
+        <div class="card-title">${safeText(video.title)}</div>  
+        <div class="card-meta">${safeText(metaParts.join(" · "))}</div>  
+      </div>  
     `;  
-    card.onclick = () => playVideo(idx);  
+    card.addEventListener("click", () => playSelectedVideo(index));  
     library.appendChild(card);  
   });  
-  focusGridCard(0);  
+  
+  focusGrid(focusIdx);  
 }  
   
-function playVideo(index) {  
-  currentVideoIndex = index;  
-  currentView = "player";  
-  const vid = currentVideos[index];  
-  playingTitle.textContent = vid.title;  
-  playingSubtitle.textContent = `${currentPlaylist.title} · Video ${index + 1} of ${currentVideos.length}`;  
-  playerScreen.classList.add("open");  
-  wakePlayerUi();  
+/* =========================================================  
+   UNIFIED TV FOCUS & SCROLLING SYSTEM  
+   ========================================================= */  
   
-  if (!ytPlayer) {  
-    const s = document.createElement("script");  
-    s.src = "https://www.youtube.com/iframe_api";  
-    window.onYouTubeIframeAPIReady = () => {  
-      ytPlayer = new YT.Player("youtubePlayer", {  
-        host: "https://www.youtube-nocookie.com",  
-        playerVars: { autoplay:1, controls:0, rel:0, fs:0, modestbranding:1, iv_load_policy:3 },  
-        events: {  
-          onReady: () => {  
-            playerReady = true;  
-            ytPlayer.loadVideoById(vid.videoId);  
-          },  
-          onStateChange: e => {  
-            if (e.data === 0 && currentVideoIndex < currentVideos.length - 1) {  
-              playVideo(currentVideoIndex + 1);  
-            }  
-          }  
-        }  
-      });  
-    };  
-    document.head.appendChild(s);  
-  } else if (playerReady) {  
-    ytPlayer.loadVideoById(vid.videoId);  
+function clearAllFocus() {  
+  document.querySelectorAll(".tv-focused").forEach(el => el.classList.remove("tv-focused"));  
+}  
+  
+function getActiveHeaderBtn() {  
+  const browseBar = document.getElementById("browseBar");  
+  if (browseBar.classList.contains("visible")) {  
+    return document.getElementById("backNavBtn");  
   }  
-  focusPlayerBtn(2); // Focus Pause/Play by default  
+  return document.getElementById("refreshBtn");  
 }  
   
-function focusGridCard(idx) {  
-  const cards = library.querySelectorAll(".card");  
-  if (!cards.length) return;  
-  selectedGridIndex = Math.max(0, Math.min(idx, cards.length - 1));  
-  cards.forEach((c, i) => c.classList.toggle("focused", i === selectedGridIndex));  
-  cards[selectedGridIndex].focus({ preventScroll: true });  
-  cards[selectedGridIndex].scrollIntoView({ block: "nearest" });  
+function focusHeaderBtn() {  
+  clearAllFocus();  
+  focusArea = "header";  
+  const btn = getActiveHeaderBtn();  
+  if (btn) {  
+    btn.classList.add("tv-focused");  
+    btn.focus({ preventScroll: true });  
+    window.scrollTo({ top: 0, behavior: "smooth" });  
+  }  
 }  
   
-function focusPlayerBtn(idx) {  
+function focusGrid(index) {  
+  const cards = [...library.querySelectorAll(".card")];  
+  if (!cards.length) {  
+    focusHeaderBtn();  
+    return;  
+  }  
+  clearAllFocus();  
+  focusArea = "grid";  
+  selectedGridIndex = Math.max(0, Math.min(index, cards.length - 1));  
+  const target = cards[selectedGridIndex];  
+  target.classList.add("tv-focused");  
+  target.focus({ preventScroll: true });  
+  target.scrollIntoView({ block: "center", inline: "nearest", behavior: "smooth" });  
+}  
+  
+function getPlayerButtons() {  
+  return [  
+    document.getElementById("closePlayer"),  
+    document.getElementById("previousVideo"),  
+    document.getElementById("togglePlayback"),  
+    document.getElementById("nextVideo")  
+  ];  
+}  
+  
+function focusPlayerBtn(index) {  
+  clearAllFocus();  
+  focusArea = "player";  
   const btns = getPlayerButtons();  
-  playerFocusedIndex = (idx + btns.length) % btns.length;  
-  btns.forEach((b, i) => b.classList.toggle("tv-focused", i === playerFocusedIndex));  
-  btns[playerFocusedIndex].focus({ preventScroll: true });  
+  playerFocusIndex = (index + btns.length) % btns.length;  
+  const target = btns[playerFocusIndex];  
+  target.classList.add("tv-focused");  
+  target.focus({ preventScroll: true });  
 }  
   
-function wakePlayerUi() {  
+/* =========================================================  
+   YOUTUBE PLAYER ENGINE  
+   ========================================================= */  
+  
+function loadYouTubeApi() {  
+  if (window.YT && window.YT.Player) {  
+    createOrStartPlayer();  
+    return;  
+  }  
+  if (apiLoading) return;  
+  apiLoading = true;  
+  
+  const script = document.createElement("script");  
+  script.id = "yt-api";  
+  script.src = "https://www.youtube.com/iframe_api";  
+  window.onYouTubeIframeAPIReady = () => {  
+    apiLoading = false;  
+    createOrStartPlayer();  
+  };  
+  document.head.appendChild(script);  
+}  
+  
+function resetUiTimer() {  
   playerScreen.classList.remove("hide-ui");  
   clearTimeout(uiHideTimer);  
-  uiHideTimer = setTimeout(() => {  
-    if (currentView === "player") playerScreen.classList.add("hide-ui");  
-  }, 4500);  
+  if (playerIsPlaying) {  
+    uiHideTimer = setTimeout(() => {  
+      playerScreen.classList.add("hide-ui");  
+    }, 4500);  
+  }  
 }  
+  
+function createOrStartPlayer() {  
+  if (!window.YT || !window.YT.Player) return;  
+  
+  if (!ytPlayer) {  
+    ytPlayer = new YT.Player("youtubePlayer", {  
+      width: "100%",  
+      height: "100%",  
+      host: "https://www.youtube-nocookie.com",  
+      playerVars: {  
+        autoplay: 1,  
+        controls: 0,  
+        rel: 0,  
+        playsinline: 1,  
+        fs: 0,  
+        iv_load_policy: 3,  
+        modestbranding: 1,  
+        enablejsapi: 1  
+      },  
+      events: {  
+        onReady: event => {  
+          playerReady = true;  
+          const iframe = event.target.getIframe();  
+          if (iframe) {  
+            iframe.style.width = "100%";  
+            iframe.style.height = "100%";  
+          }  
+          playVideoByIndex(pendingVideoIndex);  
+        },  
+        onStateChange: event => {  
+          handlePlayerState(event.data);  
+        },  
+        onError: event => {  
+          playerStatus.textContent = "Playback error (" + event.data + ").";  
+        }  
+      }  
+    });  
+  } else if (playerReady) {  
+    playVideoByIndex(pendingVideoIndex);  
+  }  
+}  
+  
+function playSelectedVideo(index) {  
+  if (!currentVideos.length || index < 0 || index >= currentVideos.length) return;  
+  pendingVideoIndex = index;  
+  currentVideoIndex = index;  
+  
+  playerScreen.classList.add("open");  
+  document.body.style.overflow = "hidden";  
+  
+  updatePlayerInformation();  
+  playerStatus.textContent = "Loading video…";  
+  focusPlayerBtn(2);  
+  resetUiTimer();  
+  loadYouTubeApi();  
+}  
+  
+function playVideoByIndex(index) {  
+  if (!playerReady || !currentVideos.length || index < 0 || index >= currentVideos.length) return;  
+  currentVideoIndex = index;  
+  const video = currentVideos[currentVideoIndex];  
+  updatePlayerInformation();  
 
-function closePlayerScreen() {  
-  if (ytPlayer && playerReady) ytPlayer.pauseVideo();  
+  const saved = getSavedProgress(video.videoId);  
+  const startSeconds = (saved && saved.time > 5) ? saved.time : 0;  
+
+  playerStatus.textContent = startSeconds > 0  
+    ? `Resuming from ${formatSeconds(startSeconds)} · Video ${currentVideoIndex + 1} of ${currentVideos.length}`  
+    : `Video ${currentVideoIndex + 1} of ${currentVideos.length}`;  
+
+  ytPlayer.loadVideoById({  
+    videoId: video.videoId,  
+    startSeconds: startSeconds  
+  });  
+
+  updatePlayerButtons();  
+  resetUiTimer();  
+}  
+  
+function updatePlayerInformation() {  
+  const video = currentVideos[currentVideoIndex];  
+  if (!video) return;  
+  playingTitle.textContent = video.title;  
+  playingSubtitle.textContent = `${currentPlaylist?.title || "Playlist"} · Video ${currentVideoIndex + 1} of ${currentVideos.length}`;  
+  updatePlayerButtons();  
+}  
+  
+function updatePlayerButtons() {  
+  document.getElementById("previousVideo").disabled = currentVideoIndex <= 0;  
+  document.getElementById("nextVideo").disabled = currentVideoIndex >= currentVideos.length - 1;  
+  document.getElementById("togglePlayback").textContent = playerIsPlaying ? "Ⅱ Pause" : "▶ Play";  
+}  
+  
+function handlePlayerState(state) {  
+  if (!window.YT || !YT.PlayerState) return;  
+  if (state === YT.PlayerState.PLAYING) {  
+    playerIsPlaying = true;  
+    startProgressTracker();  
+    playerStatus.textContent = `Playing ${currentVideoIndex + 1} of ${currentVideos.length}`;  
+    updatePlayerButtons();  
+    resetUiTimer();  
+  } else if (state === YT.PlayerState.PAUSED) {  
+    playerIsPlaying = false;  
+    recordCurrentPlayback();  
+    stopProgressTracker();  
+    playerStatus.textContent = "Paused · Progress saved";  
+    updatePlayerButtons();  
+    resetUiTimer();  
+  } else if (state === YT.PlayerState.ENDED) {  
+    playerIsPlaying = false;  
+    stopProgressTracker();  
+    if (currentVideos[currentVideoIndex]) {  
+      clearVideoProgress(currentVideos[currentVideoIndex].videoId);  
+    }  
+    updatePlayerButtons();  
+    resetUiTimer();  
+    if (currentVideoIndex < currentVideos.length - 1) {  
+      playVideoByIndex(currentVideoIndex + 1);  
+    } else {  
+      playerStatus.textContent = "You have reached the end of this playlist.";  
+    }  
+  } else if (state === YT.PlayerState.BUFFERING) {  
+    playerStatus.textContent = "Buffering…";  
+  }  
+}  
+  
+function playNextVideo() {  
+  if (currentVideoIndex < currentVideos.length - 1) {  
+    recordCurrentPlayback();  
+    pendingVideoIndex = currentVideoIndex + 1;  
+    playVideoByIndex(pendingVideoIndex);  
+  }  
+}  
+  
+function playPreviousVideo() {  
+  if (currentVideoIndex > 0) {  
+    recordCurrentPlayback();  
+    pendingVideoIndex = currentVideoIndex - 1;  
+    playVideoByIndex(pendingVideoIndex);  
+  }  
+}  
+  
+function togglePlayback() {  
+  if (!ytPlayer || !playerReady) return;  
+  resetUiTimer();  
+  if (playerIsPlaying) {  
+    ytPlayer.pauseVideo();  
+  } else {  
+    ytPlayer.playVideo();  
+  }  
+}  
+  
+function closePlayback() {  
+  recordCurrentPlayback();  
+  stopProgressTracker();  
   playerScreen.classList.remove("open");  
-  currentView = "videos";  
-  focusGridCard(currentVideoIndex);  
+  playerScreen.classList.remove("hide-ui");  
+  clearTimeout(uiHideTimer);  
+  document.body.style.overflow = "";  
+  
+  if (ytPlayer && playerReady) {  
+    ytPlayer.pauseVideo();  
+  }  
+  playerIsPlaying = false;  
+  
+  // Refresh video grid cards to show updated progress bar & resume badge  
+  if (currentView === "videos") {  
+    renderVideos(currentVideoIndex);  
+  }  
 }  
-
-// Global Bridge Handlers called from Android dispatchKeyEvent
-window.handleTvBackPress = function() {  
-  if (currentView === "player") {  
-    closePlayerScreen();  
+  
+function navigateBackLevel() {  
+  if (playerScreen.classList.contains("open")) {  
+    closePlayback();  
     return "handled";  
   }  
   if (currentView === "videos") {  
-    renderPlaylists();  
+    renderPlaylists(currentFolder, hasFolders);  
     return "handled";  
   }  
-  return "exit"; // Tells Android to finish Activity  
-};  
-
-window.handleTvDpad = function(keyCode) {  
-  wakePlayerUi();  
+  if (currentView === "playlists" && hasFolders) {  
+    renderFolders();  
+    return "handled";  
+  }  
+  return "exit";  
+}  
   
-  if (currentView === "player") {  
-    if (keyCode === 21) focusPlayerBtn(playerFocusedIndex - 1); // LEFT  
-    if (keyCode === 22) focusPlayerBtn(playerFocusedIndex + 1); // RIGHT  
-    if (keyCode === 19) focusPlayerBtn(0);                     // UP -> Close Btn  
-    if (keyCode === 20) focusPlayerBtn(2);                     // DOWN -> Play/Pause  
-    if (keyCode === 23 || keyCode === 66) {                    // CENTER / ENTER  
-      getPlayerButtons()[playerFocusedIndex].click();  
+/* =========================================================  
+   ANDROID BRIDGE & KEYBOARD REMOTE HANDLERS  
+   ========================================================= */  
+  
+window.handleTvBackPress = function() {  
+  return navigateBackLevel();  
+};  
+  
+window.handleTvDpad = function(keyCode) {  
+  const playerOpen = playerScreen.classList.contains("open");  
+  
+  if (playerOpen) {  
+    resetUiTimer();  
+    if (keyCode === 21) focusPlayerBtn(playerFocusIndex - 1); // LEFT  
+    else if (keyCode === 22) focusPlayerBtn(playerFocusIndex + 1); // RIGHT  
+    else if (keyCode === 19) focusPlayerBtn(0); // UP -> Close/Back to Videos  
+    else if (keyCode === 20) focusPlayerBtn(2); // DOWN -> Play/Pause  
+    else if (keyCode === 23 || keyCode === 66) { // OK/ENTER  
+      getPlayerButtons()[playerFocusIndex].click();  
     }  
     return;  
   }  
-
-  const cols = 4;  
-  if (keyCode === 21) focusGridCard(selectedGridIndex - 1);     // LEFT  
-  if (keyCode === 22) focusGridCard(selectedGridIndex + 1);     // RIGHT  
-  if (keyCode === 19) focusGridCard(selectedGridIndex - cols);  // UP  
-  if (keyCode === 20) focusGridCard(selectedGridIndex + cols);  // DOWN  
-  if (keyCode === 23 || keyCode === 66) {                       // ENTER  
-    const cards = library.querySelectorAll(".card");  
-    if (cards[selectedGridIndex]) cards[selectedGridIndex].click();  
+  
+  const cards = [...library.querySelectorAll(".card")];  
+  const cols = getComputedStyle(library).gridTemplateColumns.split(" ").length || 1;  
+  
+  if (focusArea === "header") {  
+    if (keyCode === 20 && cards.length) { // DOWN -> Jump into Grid  
+      focusGrid(0);  
+    } else if (keyCode === 23 || keyCode === 66) { // OK/ENTER  
+      const btn = getActiveHeaderBtn();  
+      if (btn) btn.click();  
+    }  
+    return;  
+  }  
+  
+  if (focusArea === "grid") {  
+    if (keyCode === 21) { // LEFT  
+      focusGrid(selectedGridIndex - 1);  
+    } else if (keyCode === 22) { // RIGHT  
+      focusGrid(selectedGridIndex + 1);  
+    } else if (keyCode === 20) { // DOWN  
+      focusGrid(selectedGridIndex + cols);  
+    } else if (keyCode === 19) { // UP  
+      if (selectedGridIndex < cols) {  
+        focusHeaderBtn();  
+      } else {  
+        focusGrid(selectedGridIndex - cols);  
+      }  
+    } else if (keyCode === 23 || keyCode === 66) { // OK/ENTER  
+      if (cards[selectedGridIndex]) cards[selectedGridIndex].click();  
+    }  
   }  
 };  
+  
+document.addEventListener("keydown", e => {  
+  if (["Escape", "Backspace", "BrowserBack", "GoBack"].includes(e.key)) {  
+    e.preventDefault();  
+    navigateBackLevel();  
+  } else if (e.key === "ArrowLeft") {  
+    e.preventDefault(); window.handleTvDpad(21);  
+  } else if (e.key === "ArrowRight") {  
+    e.preventDefault(); window.handleTvDpad(22);  
+  } else if (e.key === "ArrowUp") {  
+    e.preventDefault(); window.handleTvDpad(19);  
+  } else if (e.key === "ArrowDown") {  
+    e.preventDefault(); window.handleTvDpad(20);  
+  } else if (e.key === "Enter" || e.key === " ") {  
+    e.preventDefault(); window.handleTvDpad(23);  
+  } else if (e.key === "MediaPlayPause") {  
+    e.preventDefault(); togglePlayback();  
+  }  
+});  
 
-document.getElementById("closePlayer").onclick = closePlayerScreen;  
-document.getElementById("backToPlaylists").onclick = renderPlaylists;  
-document.getElementById("prevBtn").onclick = () => { if (currentVideoIndex > 0) playVideo(currentVideoIndex - 1); };  
-document.getElementById("nextBtn").onclick = () => { if (currentVideoIndex < currentVideos.length - 1) playVideo(currentVideoIndex + 1); };  
-document.getElementById("pauseBtn").onclick = () => {  
-  if (!ytPlayer || !playerReady) return;  
-  const state = ytPlayer.getPlayerState();  
-  if (state === 1) { ytPlayer.pauseVideo(); document.getElementById("pauseBtn").textContent = "▶ Play"; }  
-  else { ytPlayer.playVideo(); document.getElementById("pauseBtn").textContent = "Ⅱ Pause"; }  
-};  
-document.getElementById("refreshBtn").onclick = loadLibrary;  
-
-window.onload = loadLibrary;  
+window.addEventListener("beforeunload", recordCurrentPlayback);  
+document.getElementById("refreshBtn").addEventListener("click", loadLibrary);  
+document.getElementById("closePlayer").addEventListener("click", closePlayback);  
+document.getElementById("backNavBtn").addEventListener("click", navigateBackLevel);  
+document.getElementById("nextVideo").addEventListener("click", playNextVideo);  
+document.getElementById("previousVideo").addEventListener("click", playPreviousVideo);  
+document.getElementById("togglePlayback").addEventListener("click", togglePlayback);  
+  
+window.addEventListener("load", loadLibrary);  
 })();  
 </script>  
 </body>  
